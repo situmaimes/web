@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>生物2016-03班成绩录入</title>
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style>
+	input
+	{
+	width:100px;
+	}
+	</style>
+</head>
+
+<body>
+<h3 class="text-center">
+	请填写认真填写表单并提交
+</h3>
+{% if get_flashed_messages() %}
+{% for message in get_flashed_messages() %}
+<h5 class="text-center">
+    {{message}}
+</h5>
+{% endfor %}
+{% else %}
+<br>
+<br>
+{% endif %}
+<form class="form-horizontal" role="form" id="score" action="submit" method="post">
+	<fieldset>
+	<div class="form-group">
+		<label class="col-sm-5 control-label" for="name" >姓名</label>
+		<div class="col-sm-3">
+		<input type="text" class="form-control" id="name"  maxlength="3" name="name"
+			   placeholder="请输入姓名">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-5 control-label" for="name" >学号</label>
+		<div class="col-sm-3">
+		<input type="text" class="form-control" id="id"  maxlength="10" name="id" pattern="[\d]{10}"
+			   placeholder="请输入学号">
+		</div>
+	</div>
+    <div class="form-group">
+		<label class="col-sm-5 control-label" for="name" >四级</label>
+		<label >
+		<input type="radio" name="cet4"  value="1" checked>通过
+		</label>
+		<label >
+		<input type="radio" name="cet4"   value="0">未通过
+		</label>
+	</div>
+    <div class="form-group">
+		<label class="col-sm-5 control-label" for="name" >生化成绩</label>
+		<div class="col-sm-3">
+		<input type="text" class="form-control" id="bioChem"  maxlength="4" name="bioChem" pattern="[\d]{2}(\.\d)?"
+			   placeholder="请输入生化成绩">
+		</div>
+	</div>
+	<div class="form-group">
+            <div class="col-sm-3 col-sm-offset-5">
+                <button class="btn btn-default" type="submit" id="submit">提交</button>
+            </div>
+
+        </div>
+</fieldset>
+</form>
+</body>
+</html>
+
+
+
+
