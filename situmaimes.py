@@ -28,7 +28,7 @@ def submit():
 
 def prepare():
     global sanbanlist
-    with codecs.open(r"C:\Personal Files\projects\files\三班.json", encoding="utf-8") as f:
+    with codecs.open(r"./files/三班.json", encoding="utf-8") as f:
         sanban = json.loads(f.read())
     sanbanlist = [(sanban[i]["学号"], i) for i in sanban]
     conn = sqlite3.connect("score.db")
@@ -54,4 +54,4 @@ def prepare():
 
 if __name__=="__main__":
     prepare()
-    app.run("0.0.0.0",debug=True)
+    app.run("0.0.0.0",debug=True,port=5010)
