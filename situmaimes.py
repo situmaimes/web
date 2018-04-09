@@ -1,12 +1,39 @@
-from flask import Flask,render_template,request,redirect,url_for,flash
+from flask import Flask,render_template,request,redirect,url_for,flash,make_response,jsonify
 import json
 import codecs
 import sqlite3
 app=Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
+
+
+@app.route("/xiaoyou")
+def xiaoyou():
+    conn = sqlite3.connect("test.db")
+    c=conn.cursor()
+    print(request.args.get("name"))
+    data=c.execute("select * from xiaoyou ".format(name=request.args.get("name"))).fetchone()
+    print(data)
+    if data:
+        response=make_response(jsonify({
+            "name":data[1],
+            "birth":data[2],
+            "sign":data[3],
+            "jpg":data[4].decode("utf-8"),
+            "intro":data[5]
+        }))
+    else:
+        response=make_response(jsonify(response="feaf"))
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'POST'
+    response.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
+    return response
+
+
 @app.route("/score")
 def score():
+    prepare()
     return render_template("score.html")
+
 
 @app.route("/submit",methods=["POST"])
 def submit():
@@ -53,5 +80,4 @@ def prepare():
     conn.close()
 
 if __name__=="__main__":
-    prepare()
     app.run("0.0.0.0",debug=True,port=5010)
