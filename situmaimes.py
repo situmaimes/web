@@ -2,6 +2,7 @@ from flask import Flask,render_template,request,redirect,url_for,flash,make_resp
 import json
 import codecs
 import sqlite3
+import csv
 app=Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
 
@@ -34,6 +35,22 @@ def score():
     prepare()
     return render_template("score.html")
 
+@app.route("/")
+def hello():
+    return "你好"
+
+
+@app.route("/classify")
+def classify():
+    prepare()
+    return render_template("classify.html")
+@app.route("/commoditySubmit",methods=["POST"])
+def commoditySubmit():
+    for i in classify:
+        if request.form["name"] in i[0]:
+            flash("      ".join(i))
+    return render_template("classify.html")
+
 
 @app.route("/submit",methods=["POST"])
 def submit():
@@ -55,6 +72,9 @@ def submit():
 
 def prepare():
     global sanbanlist
+    global classify
+    with open("./files/最终结果.csv",'r') as infile:
+        classify=list(csv.reader(infile))
     with codecs.open(r"./files/三班.json", encoding="utf-8") as f:
         sanban = json.loads(f.read())
     sanbanlist = [(sanban[i]["学号"], i) for i in sanban]
